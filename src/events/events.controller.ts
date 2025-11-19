@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Delete,
+  Get,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -19,6 +20,13 @@ import { UpdateEventDto } from './dto/update-event.dto';
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
+
+  @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  async findAll(): Promise<Event[]> {
+    return await this.eventsService.findAll();
+  }
 
   @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)

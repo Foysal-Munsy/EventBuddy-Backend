@@ -33,4 +33,8 @@ export class EventsService {
     }
     await this.eventRepository.remove(event);
   }
+
+  async findAll(): Promise<Event[]> {
+    return this.eventRepository.find();
+  }
 }
