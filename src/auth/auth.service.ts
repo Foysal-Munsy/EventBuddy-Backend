@@ -28,7 +28,7 @@ export class AuthService {
     return this.userRepository.save(newUser);
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<any> {
+  async login(loginUserDto: LoginUserDto): Promise<string> {
     const user = await this.userRepository.findOne({
       where: { email: loginUserDto.email },
     });
@@ -39,9 +39,8 @@ export class AuthService {
       throw new ConflictException('Invalid credentials provided.');
     }
     // jwt
-    const jwt = await this.jwtService.signAsync({
+    return this.jwtService.signAsync({
       id: user.id,
     });
-    return jwt;
   }
 }
