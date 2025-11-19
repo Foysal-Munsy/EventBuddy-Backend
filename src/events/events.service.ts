@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, LessThan } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -36,5 +36,10 @@ export class EventsService {
 
   async findAll(): Promise<Event[]> {
     return this.eventRepository.find();
+  }
+
+  async findPrevious(): Promise<Event[]> {
+    const now = new Date();
+    return this.eventRepository.find({ where: { date: LessThan(now) } });
   }
 }

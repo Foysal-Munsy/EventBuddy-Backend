@@ -28,6 +28,13 @@ export class EventsController {
     return await this.eventsService.findAll();
   }
 
+  @Get('previous')
+  //   @UseGuards(JwtAuthGuard, RolesGuard)
+  //   @Roles('admin')
+  async findPrevious(): Promise<Event[]> {
+    return await this.eventsService.findPrevious();
+  }
+
   @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
