@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ async function bootstrap() {
       // disableErrorMessages: false,
     }),
   );
+  app.use(cookieParser());
   app.enableCors({
     origin: process.env.Frontend_URL, // frontend URL
     credentials: true,

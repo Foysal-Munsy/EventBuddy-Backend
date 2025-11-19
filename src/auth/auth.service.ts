@@ -28,7 +28,7 @@ export class AuthService {
     return this.userRepository.save(newUser);
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<string> {
+  async findOne(loginUserDto: LoginUserDto): Promise<string> {
     const user = await this.userRepository.findOne({
       where: { email: loginUserDto.email },
     });
@@ -42,5 +42,15 @@ export class AuthService {
     return this.jwtService.signAsync({
       id: user.id,
     });
+    // return { jwt, user };
+  }
+
+  async getUserFromToken(token: any): Promise<Record<string, any> | null> {
+    if (!token) return null;
+    try {
+      return this.jwtService.verifyAsync(token as string);
+    } catch {
+      return null;
+    }
   }
 }
