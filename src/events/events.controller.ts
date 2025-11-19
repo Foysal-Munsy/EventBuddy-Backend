@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Body,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -34,5 +35,13 @@ export class EventsController {
     @Body() updateEventDto: UpdateEventDto,
   ): Promise<Event> {
     return await this.eventsService.update(id, updateEventDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.eventsService.remove(id);
+    return { message: 'Event deleted successfully' };
   }
 }

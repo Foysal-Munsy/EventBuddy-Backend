@@ -25,4 +25,12 @@ export class EventsService {
     Object.assign(event, updateEventDto);
     return this.eventRepository.save(event);
   }
+
+  async remove(id: number): Promise<void> {
+    const event = await this.eventRepository.findOne({ where: { id } });
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    await this.eventRepository.remove(event);
+  }
 }
