@@ -5,11 +5,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<User> {
@@ -25,7 +28,7 @@ export class AuthService {
     return this.userRepository.save(newUser);
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<User | null> {
+  async login(loginUserDto: LoginUserDto): Promise<any> {
     const user = await this.userRepository.findOne({
       where: { email: loginUserDto.email },
     });
@@ -35,6 +38,10 @@ export class AuthService {
     if (!(await bcrypt.compare(loginUserDto.password, user.password))) {
       throw new ConflictException('Invalid credentials provided.');
     }
-    return user;
+    // jwt
+    const jwt = await this.jwtService.signAsync({
+      id: user.id,
+    });
+    return jwt;
   }
 }
