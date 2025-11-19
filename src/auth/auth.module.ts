@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from './guards/roles.guard';
 dotenv.config();
 @Module({
   imports: [
@@ -15,6 +17,7 @@ dotenv.config();
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtAuthGuard, RolesGuard],
+  exports: [JwtAuthGuard, RolesGuard, JwtModule, TypeOrmModule],
 })
 export class AuthModule {}

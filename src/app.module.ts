@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { EventsModule } from './events/events.module';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,6 +21,7 @@ dotenv.config();
       synchronize: true,
     }),
     AuthModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
