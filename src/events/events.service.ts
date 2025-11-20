@@ -38,6 +38,14 @@ export class EventsService {
     return this.eventRepository.find();
   }
 
+  async findOne(id: number): Promise<Event> {
+    const event = await this.eventRepository.findOne({ where: { id } });
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    return event;
+  }
+
   async findPrevious(): Promise<Event[]> {
     const now = new Date();
     return this.eventRepository.find({ where: { date: LessThan(now) } });

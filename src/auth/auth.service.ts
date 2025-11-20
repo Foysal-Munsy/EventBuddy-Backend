@@ -28,7 +28,10 @@ export class AuthService {
     return this.userRepository.save(newUser);
   }
 
-  async findOne(loginUserDto: LoginUserDto): Promise<string> {
+  async findOne(loginUserDto: LoginUserDto): Promise<{
+    jwt: string;
+    user: { id: number; fullName: string; email: string; role: string };
+  }> {
     const user = await this.userRepository.findOne({
       where: { email: loginUserDto.email },
     });
@@ -38,11 +41,18 @@ export class AuthService {
     if (!(await bcrypt.compare(loginUserDto.password, user.password))) {
       throw new ConflictException('Invalid credentials provided.');
     }
-    // jwt
-    return this.jwtService.signAsync({
+    const jwt = await this.jwtService.signAsync({
       id: user.id,
     });
-    // return { jwt, user };
+    return {
+      jwt,
+      user: {
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+      },
+    };
   }
 
   async getUserFromToken(token: any): Promise<Record<string, any> | null> {

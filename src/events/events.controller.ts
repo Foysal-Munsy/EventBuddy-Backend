@@ -42,6 +42,11 @@ export class EventsController {
     return await this.eventsService.findUpcoming();
   }
 
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
+    return await this.eventsService.findOne(id);
+  }
+
   @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')

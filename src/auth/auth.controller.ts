@@ -22,9 +22,16 @@ export class AuthController {
     @Body() loginUserDto: LoginUserDto,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const jwt = await this.authService.findOne(loginUserDto);
+    const { jwt, user } = await this.authService.findOne(loginUserDto);
     response.cookie('jwt', jwt, { httpOnly: true });
-    return { message: 'Login successful' };
+    return {
+      message: 'Login successful',
+      user: {
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+      },
+    };
   }
 
   @Get('user')
