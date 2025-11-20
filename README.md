@@ -1,6 +1,6 @@
 # EventBuddy Backend
 
-A comprehensive event management and booking system built with NestJS, TypeScript, TypeORM, and PostgreSQL/MySQL.
+A comprehensive event management and booking system built with NestJS, TypeScript, TypeORM, and PostgreSQL.
 
 **Frontend Repo:** [EventBuddy Frontend](https://github.com/Foysal-Munsy/EventBuddy-Frontend)
 
