@@ -14,9 +14,11 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Event } from './entities/event.entity';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { BookEventDto } from './dto/book-event.dto';
+import { Booking } from './entities/booking.entity';
 
 @Controller('events')
 export class EventsController {
@@ -43,6 +45,13 @@ export class EventsController {
     return await this.eventsService.findUpcoming();
   }
 
+  @Get('my-bookings')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('user')
+  async getMyBookings(@CurrentUser() user: any): Promise<Booking[]> {
+    return await this.eventsService.getMyBookings(user.id);
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
     return await this.eventsService.findOne(id);
@@ -53,9 +62,10 @@ export class EventsController {
   @Roles('user')
   async bookSeats(
     @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: any,
     @Body() bookEventDto: BookEventDto,
   ) {
-    return await this.eventsService.bookSeats(id, bookEventDto);
+    return await this.eventsService.bookSeats(id, user.id, bookEventDto);
   }
 
   @Post('create')

@@ -9,12 +9,15 @@ import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { BookEventDto } from './dto/book-event.dto';
+import { Booking } from './entities/booking.entity';
 
 @Injectable()
 export class EventsService {
   constructor(
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
+    @InjectRepository(Booking)
+    private readonly bookingRepository: Repository<Booking>,
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
@@ -63,8 +66,9 @@ export class EventsService {
 
   async bookSeats(
     id: number,
+    userId: number,
     bookEventDto: BookEventDto,
-  ): Promise<{ message: string; event: Event }> {
+  ): Promise<{ message: string; event: Event; booking: Booking }> {
     const event = await this.eventRepository.findOne({ where: { id } });
     if (!event) {
       throw new NotFoundException('Event not found');
@@ -80,9 +84,26 @@ export class EventsService {
     event.bookedSeats += bookEventDto.seats;
     const updatedEvent = await this.eventRepository.save(event);
 
+    // Create booking record
+    const booking = this.bookingRepository.create({
+      userId,
+      eventId: id,
+      seats: bookEventDto.seats,
+    });
+    const savedBooking = await this.bookingRepository.save(booking);
+
     return {
       message: `Successfully booked ${bookEventDto.seats} seat(s)`,
       event: updatedEvent,
+      booking: savedBooking,
     };
+  }
+
+  async getMyBookings(userId: number): Promise<Booking[]> {
+    return this.bookingRepository.find({
+      where: { userId },
+      relations: ['event'],
+      order: { bookedAt: 'DESC' },
+    });
   }
 }
