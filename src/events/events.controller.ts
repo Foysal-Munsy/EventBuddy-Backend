@@ -16,6 +16,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Event } from './entities/event.entity';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { BookEventDto } from './dto/book-event.dto';
 
 @Controller('events')
 export class EventsController {
@@ -45,6 +46,16 @@ export class EventsController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
     return await this.eventsService.findOne(id);
+  }
+
+  @Post(':id/book')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('user')
+  async bookSeats(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() bookEventDto: BookEventDto,
+  ) {
+    return await this.eventsService.bookSeats(id, bookEventDto);
   }
 
   @Post('create')

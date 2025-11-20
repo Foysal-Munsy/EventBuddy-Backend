@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan, MoreThan } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { BookEventDto } from './dto/book-event.dto';
 
 @Injectable()
 export class EventsService {
@@ -54,5 +59,30 @@ export class EventsService {
   async findUpcoming(): Promise<Event[]> {
     const now = new Date();
     return this.eventRepository.find({ where: { date: MoreThan(now) } });
+  }
+
+  async bookSeats(
+    id: number,
+    bookEventDto: BookEventDto,
+  ): Promise<{ message: string; event: Event }> {
+    const event = await this.eventRepository.findOne({ where: { id } });
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+
+    const availableSeats = event.totalSeats - event.bookedSeats;
+    if (availableSeats < bookEventDto.seats) {
+      throw new BadRequestException(
+        `Only ${availableSeats} seats available. You requested ${bookEventDto.seats} seats.`,
+      );
+    }
+
+    event.bookedSeats += bookEventDto.seats;
+    const updatedEvent = await this.eventRepository.save(event);
+
+    return {
+      message: `Successfully booked ${bookEventDto.seats} seat(s)`,
+      event: updatedEvent,
+    };
   }
 }
