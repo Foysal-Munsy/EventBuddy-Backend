@@ -1,98 +1,353 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# EventBuddy Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A comprehensive event management and booking system built with NestJS, TypeScript, TypeORM, and PostgreSQL/MySQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**Frontend Repo:** [EventBuddy Frontend](https://github.com/Foysal-Munsy/EventBuddy-Frontend)
 
-## Description
+## Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- 🔐 User authentication with JWT (cookie-based)
+- 👥 Role-based access control (Admin & User)
+- 📅 Event management (CRUD operations)
+- 🎫 Seat booking system (1-4 seats per booking)
+- 📊 Booking history tracking
+- 🔍 Filter events by date (upcoming/previous)
 
-## Project setup
+## Tech Stack
 
+- **Framework:** NestJS
+- **Language:** TypeScript
+- **Database:** TypeORM (PostgreSQL)
+- **Authentication:** JWT + bcrypt
+- **Validation:** class-validator, class-transformer
+
+## Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn
+- PostgreSQL database
+
+## Installation & Setup
+
+### 1. Clone the Repository
 ```bash
-$ npm install
+git clone <repository-url>
+cd eventbuddy-backend
 ```
 
-## Compile and run the project
-
+### 2. Install Dependencies
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 3. Environment Configuration
+Create a `.env` file in the root directory:
 
-```bash
-# unit tests
-$ npm run test
+```env
+# Server Configuration
+PORT=8000
 
-# e2e tests
-$ npm run test:e2e
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+DB_DATABASE=eventbuddy
 
-# test coverage
-$ npm run test:cov
+# JWT Configuration
+JWT_SECRET=your_super_secret_jwt_key
+
+# Frontend URL (for CORS)
+Frontend_URL=http://localhost:3000
 ```
 
-## Deployment
+### 4. Database Setup
+Make sure your database is running and accessible with the credentials in `.env`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 5. Run the Application
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Development mode with hot-reload
+npm run start:dev
+
+# Production mode
+npm run build
+npm run start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The server will start on `http://localhost:8000`
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## API Endpoints
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 🔐 Authentication Endpoints
 
-## Support
+#### Register User
+```http
+POST /auth/register
+Content-Type: application/json
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+{
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+**Response:** User object (role defaults to "user")
 
-## Stay in touch
+#### Login
+```http
+POST /auth/login
+Content-Type: application/json
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+**Response:** 
+```json
+{
+  "message": "Login successful",
+  "user": {
+    "fullName": "John Doe",
+    "email": "john@example.com",
+    "role": "user"
+  }
+}
+```
+**Note:** JWT token stored in httpOnly cookie
+
+#### Get Current User
+```http
+GET /auth/user
+Cookie: jwt=<token>
+```
+**Response:** User payload from JWT
+
+#### Logout
+```http
+POST /auth/logout
+```
+**Response:** `{ "message": "Logout successful" }`
+
+---
+
+### 📅 Event Endpoints
+
+#### Get All Events (Admin Only)
+```http
+GET /events
+Cookie: jwt=<admin-token>
+```
+**Response:** Array of all events
+
+#### Get Specific Event (Public)
+```http
+GET /events/:id
+```
+**Response:** Single event object
+
+#### Get Previous Events (Public)
+```http
+GET /events/previous
+```
+**Response:** Array of events with `date < now`
+
+#### Get Upcoming Events (Public)
+```http
+GET /events/upcoming
+```
+**Response:** Array of events with `date > now`
+
+#### Create Event (Admin Only)
+```http
+POST /events/create
+Cookie: jwt=<admin-token>
+Content-Type: application/json
+
+{
+  "title": "Music Concert",
+  "description": "Amazing live performance",
+  "date": "2025-12-25T19:00:00Z",
+  "location": "City Hall",
+  "totalSeats": 100,
+  "imageUrl": "https://example.com/image.jpg"
+}
+```
+**Response:** Created event object
+
+#### Update Event (Admin Only)
+```http
+PATCH /events/:id
+Cookie: jwt=<admin-token>
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "totalSeats": 150
+}
+```
+**Response:** Updated event object
+
+#### Delete Event (Admin Only)
+```http
+DELETE /events/:id
+Cookie: jwt=<admin-token>
+```
+**Response:** `{ "message": "Event deleted successfully" }`
+
+---
+
+### 🎫 Booking Endpoints
+
+#### Book Event Seats (User Only)
+```http
+POST /events/:id/book
+Cookie: jwt=<user-token>
+Content-Type: application/json
+
+{
+  "seats": 3
+}
+```
+**Constraints:** 
+- User role required
+- Seats: 1-4 per booking
+- Must have available seats
+
+**Response:**
+```json
+{
+  "message": "Successfully booked 3 seat(s)",
+  "event": { ...updated event... },
+  "booking": { ...booking record... }
+}
+```
+
+#### Get My Bookings (User Only)
+```http
+GET /events/my-bookings
+Cookie: jwt=<user-token>
+```
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "userId": 5,
+    "eventId": 3,
+    "seats": 2,
+    "bookedAt": "2025-11-20T10:30:00Z",
+    "event": {
+      "id": 3,
+      "title": "Concert Night",
+      "date": "2025-12-15",
+      "location": "City Hall",
+      ...
+    }
+  }
+]
+```
+
+---
+
+## Database Schema
+
+### Users Table
+- `id` (PK)
+- `fullName`
+- `email` (unique)
+- `password` (hashed)
+- `role` (user/admin)
+
+### Events Table
+- `id` (PK)
+- `title`
+- `description`
+- `date`
+- `location`
+- `totalSeats` (default: 4)
+- `bookedSeats` (default: 0)
+- `imageUrl` (nullable)
+
+### Bookings Table
+- `id` (PK)
+- `userId` (FK → Users)
+- `eventId` (FK → Events)
+- `seats`
+- `bookedAt` (timestamp)
+
+---
+
+## Project Structure
+
+```
+src/
+├── auth/
+│   ├── decorators/
+│   │   ├── current-user.decorator.ts
+│   │   └── roles.decorator.ts
+│   ├── dto/
+│   │   ├── create-user.dto.ts
+│   │   └── login-user.dto.ts
+│   ├── entities/
+│   │   └── user.entity.ts
+│   ├── guards/
+│   │   ├── jwt-auth.guard.ts
+│   │   └── roles.guard.ts
+│   ├── auth.controller.ts
+│   ├── auth.module.ts
+│   └── auth.service.ts
+├── events/
+│   ├── dto/
+│   │   ├── book-event.dto.ts
+│   │   ├── create-event.dto.ts
+│   │   └── update-event.dto.ts
+│   ├── entities/
+│   │   ├── booking.entity.ts
+│   │   └── event.entity.ts
+│   ├── events.controller.ts
+│   ├── events.module.ts
+│   └── events.service.ts
+├── app.controller.ts
+├── app.module.ts
+├── app.service.ts
+└── main.ts
+```
+
+---
+
+## Authentication Flow
+
+1. **Register:** User creates account → password is hashed → stored in DB with role="user"
+2. **Login:** Credentials validated → JWT token generated → stored in httpOnly cookie
+3. **Protected Routes:** JWT extracted from cookie → verified → user info available via `@CurrentUser()` decorator
+4. **Role Check:** `@Roles('admin')` or `@Roles('user')` decorator enforces access control
+
+---
+
+## Common Issues & Solutions
+
+### Database Connection Error
+- Verify database is running
+- Check credentials in `.env`
+- Ensure database exists
+
+### CORS Error
+- Update `Frontend_URL` in `.env` to match your frontend URL
+- Ensure `credentials: 'include'` is set in frontend fetch calls
+
+### JWT Cookie Not Sent
+- Use `credentials: 'include'` in fetch/axios
+- Ensure frontend and backend are on compatible domains/ports
+
+---
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is [MIT licensed](LICENSE).
+
+---
+
